@@ -5,26 +5,16 @@ import Logo from '../Logo'
 import { useCombinedActiveList } from 'state/lists/hooks'
 import useHttpLocations from 'hooks/useHttpLocations'
 import { useActiveNetworkVersion } from 'state/application/hooks'
-import { OptimismNetworkInfo } from 'constants/networks'
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
-import { ChainId } from '@uniswap/sdk-core'
+import { ChainId } from '@taraswap/sdk-core'
+import { TaraxaNetworkInfo } from 'constants/networks'
 
 export function chainIdToNetworkName(networkId: ChainId) {
   switch (networkId) {
-    case ChainId.MAINNET:
-      return 'ethereum'
-    case ChainId.ARBITRUM_ONE:
-      return 'arbitrum'
-    case ChainId.OPTIMISM:
-      return 'optimism'
-    case ChainId.POLYGON:
-      return 'polygon'
-    case ChainId.BNB:
-      return 'smartchain'
-    case ChainId.BASE:
-      return 'base'
+    case ChainId.TARAXA:
+      return 'taraxa'
     default:
-      return 'ethereum'
+      return 'taraxa'
   }
 }
 
@@ -157,7 +147,7 @@ export default function CurrencyLogo({
     uriLocationsBase,
   ])
 
-  if (activeNetwork === OptimismNetworkInfo && address === '0x4200000000000000000000000000000000000006') {
+  if (activeNetwork === TaraxaNetworkInfo && address === '0x4200000000000000000000000000000000000006') {
     return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} {...rest} />
   }
 

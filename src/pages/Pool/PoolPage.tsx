@@ -26,12 +26,12 @@ import DensityChart from 'components/DensityChart'
 import { MonoSpace } from 'components/shared'
 import { useActiveNetworkVersion } from 'state/application/hooks'
 import { networkPrefix } from 'utils/networkPrefix'
-import { EthereumNetworkInfo } from 'constants/networks'
+import { TaraxaNetworkInfo } from 'constants/networks'
 import { GenericImageWrapper } from 'components/Logo'
 import { Navigate, useParams } from 'react-router-dom'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
-import { ChainId } from '@uniswap/sdk-core'
+import { ChainId } from '@taraswap/sdk-core'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -181,7 +181,7 @@ function PoolPage({ address }: { address: string }) {
                     fontSize="24px"
                   >{` ${poolData.token0.symbol} / ${poolData.token1.symbol} `}</TYPE.label>
                   <GreyBadge>{feeTierPercent(poolData.feeTier)}</GreyBadge>
-                  {activeNetwork === EthereumNetworkInfo ? null : (
+                  {activeNetwork === TaraxaNetworkInfo ? null : (
                     <GenericImageWrapper src={activeNetwork.imageURL} style={{ marginLeft: '8px' }} size={'26px'} />
                   )}
                 </RowFixed>
@@ -212,7 +212,7 @@ function PoolPage({ address }: { address: string }) {
                   </StyledInternalLink>
                 </ResponsiveRow>
               </AutoColumn>
-              {activeNetwork !== EthereumNetworkInfo ? null : (
+              {activeNetwork !== TaraxaNetworkInfo ? null : (
                 <RowFixed>
                   <StyledExternalLink
                     href={`https://app.uniswap.org/#/add/${poolData.token0.address}/${poolData.token1.address}/${poolData.feeTier}`}

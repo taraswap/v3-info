@@ -15,12 +15,12 @@ import ApplicationUpdater from './state/application/updater'
 import ListUpdater from './state/lists/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import { ApolloProvider } from '@apollo/client/react'
-import { client } from 'apollo/client'
 import { SharedEventName } from '@uniswap/analytics-events'
+import { taraxaClient } from 'apollo/client'
 
 // Actual key is set by proxy server
 const AMPLITUDE_DUMMY_KEY = '00000000000000000000000000000000'
-initializeAnalytics(AMPLITUDE_DUMMY_KEY, OriginApplication.INFO, {
+initializeAnalytics(process.env.REACT_APP_AMPLITUDE_API_KEY || AMPLITUDE_DUMMY_KEY, OriginApplication.INFO, {
   proxyUrl: process.env.REACT_APP_AMPLITUDE_PROXY_URL,
   defaultEventName: SharedEventName.PAGE_VIEWED,
   debug: true,
@@ -44,7 +44,7 @@ const root = createRoot(container!)
 root.render(
   <StrictMode>
     <FixedGlobalStyle />
-    <ApolloProvider client={client}>
+    <ApolloProvider client={taraxaClient}>
       <Provider store={store}>
         <Updaters />
         <ThemeProvider>

@@ -5,8 +5,8 @@ import { TYPE, ExternalLink } from '../../theme'
 import { useActiveNetworkVersion, useSubgraphStatus } from '../../state/application/hooks'
 import { ExplorerDataType, getExplorerLink } from '../../utils'
 import useTheme from 'hooks/useTheme'
-import { EthereumNetworkInfo } from 'constants/networks'
-import { ChainId } from '@uniswap/sdk-core'
+import { TaraxaNetworkInfo } from 'constants/networks'
+import { ChainId } from '@taraswap/sdk-core'
 
 const StyledPolling = styled.div`
   display: flex;
@@ -69,7 +69,7 @@ export default function Polling() {
   const [activeNetwork] = useActiveNetworkVersion()
   const [status] = useSubgraphStatus()
   const [isMounted, setIsMounted] = useState(true)
-  const latestBlock = activeNetwork === EthereumNetworkInfo ? status.headBlock : status.syncedBlock
+  const latestBlock = activeNetwork === TaraxaNetworkInfo ? status.headBlock : status.syncedBlock
 
   useEffect(
     () => {

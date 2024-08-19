@@ -3,7 +3,7 @@ import { TokenData } from 'state/tokens/reducer'
 import { useFetchedTokenDatas } from 'data/tokens/tokenData'
 import gql from 'graphql-tag'
 import { useState, useEffect, useMemo } from 'react'
-import { client } from 'apollo/client'
+import { taraxaClient } from 'apollo/client'
 import { usePoolDatas, useAllPoolData } from 'state/pools/hooks'
 import { PoolData } from 'state/pools/reducer'
 import { notEmpty, escapeRegExp } from 'utils'
@@ -145,14 +145,14 @@ export function useFetchSearchResults(value: string): {
   useEffect(() => {
     async function fetch() {
       try {
-        const tokens = await client.query<TokenRes>({
+        const tokens = await taraxaClient.query<TokenRes>({
           query: TOKEN_SEARCH,
           variables: {
             value: value ? value.toUpperCase() : '',
             id: value,
           },
         })
-        const pools = await client.query<PoolRes>({
+        const pools = await taraxaClient.query<PoolRes>({
           query: POOL_SEARCH,
           variables: {
             tokens: tokens.data.asSymbol?.map((t) => t.id),

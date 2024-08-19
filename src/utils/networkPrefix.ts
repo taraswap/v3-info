@@ -1,8 +1,8 @@
-import { EthereumNetworkInfo, NetworkInfo } from 'constants/networks'
+import { TaraxaNetworkInfo, NetworkInfo } from 'constants/networks'
 
 export function networkPrefix(activeNewtork: NetworkInfo) {
-  const isEthereum = activeNewtork === EthereumNetworkInfo
-  if (isEthereum) {
+  const isTaraxa = activeNewtork === TaraxaNetworkInfo
+  if (isTaraxa) {
     return '/'
   }
   const prefix = '/' + activeNewtork.route.toLocaleLowerCase() + '/'

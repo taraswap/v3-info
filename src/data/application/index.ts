@@ -2,7 +2,7 @@ import { useActiveNetworkVersion } from 'state/application/hooks'
 import { healthClient } from './../../apollo/client'
 import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
-import { ArbitrumNetworkInfo, EthereumNetworkInfo } from 'constants/networks'
+import { TaraxaNetworkInfo } from 'constants/networks'
 
 export const SUBGRAPH_HEALTH = gql`
   query health($name: Bytes) {
@@ -49,12 +49,7 @@ export function useFetchedSubgraphStatus(): {
     client: healthClient,
     fetchPolicy: 'network-only',
     variables: {
-      name:
-        activeNetwork === EthereumNetworkInfo
-          ? 'uniswap/uniswap-v3'
-          : activeNetwork === ArbitrumNetworkInfo
-          ? 'ianlapham/uniswap-arbitrum-one'
-          : 'ianlapham/uniswap-optimism',
+      name: activeNetwork === TaraxaNetworkInfo ? 'lara-staking/uniswap-v3' : 'uniswap/uniswap-v3',
     },
   })
 

@@ -15,7 +15,7 @@ import PoolPage from './Pool/PoolPage'
 import { ExternalLink, TYPE } from 'theme'
 import { useActiveNetworkVersion, useSubgraphStatus } from 'state/application/hooks'
 import { DarkGreyCard } from 'components/Card'
-import { SUPPORTED_NETWORK_VERSIONS, EthereumNetworkInfo, OptimismNetworkInfo } from 'constants/networks'
+import { SUPPORTED_NETWORK_VERSIONS, TaraxaNetworkInfo } from 'constants/networks'
 import { Link } from 'rebass'
 
 const AppWrapper = styled.div`
@@ -109,10 +109,11 @@ export default function App() {
   // update network based on route
   // TEMP - find better way to do this
   const location = useLocation()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeNetwork, setActiveNetwork] = useActiveNetworkVersion()
   useEffect(() => {
     if (location.pathname === '/') {
-      setActiveNetwork(EthereumNetworkInfo)
+      setActiveNetwork(TaraxaNetworkInfo)
     } else {
       SUPPORTED_NETWORK_VERSIONS.map((n) => {
         if (location.pathname.includes(n.route.toLocaleLowerCase())) {
@@ -126,7 +127,7 @@ export default function App() {
   const [subgraphStatus] = useSubgraphStatus()
 
   const showNotSyncedWarning =
-    subgraphStatus.headBlock && subgraphStatus.syncedBlock && activeNetwork === OptimismNetworkInfo
+    subgraphStatus.headBlock && subgraphStatus.syncedBlock
       ? subgraphStatus.headBlock - subgraphStatus.syncedBlock > BLOCK_DIFFERENCE_THRESHOLD
       : false
 

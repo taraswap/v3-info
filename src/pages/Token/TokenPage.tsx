@@ -36,13 +36,13 @@ import { MonoSpace } from 'components/shared'
 import dayjs from 'dayjs'
 import { useActiveNetworkVersion } from 'state/application/hooks'
 import { networkPrefix } from 'utils/networkPrefix'
-import { EthereumNetworkInfo } from 'constants/networks'
+import { TaraxaNetworkInfo } from 'constants/networks'
 import { GenericImageWrapper } from 'components/Logo'
 import { useCMCLink } from 'hooks/useCMCLink'
 import CMCLogo from '../../assets/images/cmc.png'
 import { useParams } from 'react-router-dom'
 import { Trace } from '@uniswap/analytics'
-import { ChainId } from '@uniswap/sdk-core'
+import { ChainId } from '@taraswap/sdk-core'
 
 const PriceText = styled(TYPE.label)`
   font-size: 36px;
@@ -223,7 +223,7 @@ export default function TokenPage() {
                       <TYPE.main ml={'6px'} fontSize="20px">
                         ({tokenData.symbol})
                       </TYPE.main>
-                      {activeNetwork === EthereumNetworkInfo ? null : (
+                      {activeNetwork === TaraxaNetworkInfo ? null : (
                         <GenericImageWrapper src={activeNetwork.imageURL} style={{ marginLeft: '8px' }} size={'26px'} />
                       )}
                     </RowFixed>
@@ -232,7 +232,7 @@ export default function TokenPage() {
                       (<Percent value={tokenData.priceUSDChange} />)
                     </RowFlat>
                   </AutoColumn>
-                  {activeNetwork !== EthereumNetworkInfo ? null : (
+                  {activeNetwork !== TaraxaNetworkInfo ? null : (
                     <RowFixed>
                       <StyledExternalLink href={`https://app.uniswap.org/#/add/${formattedAddress}`}>
                         <ButtonGray width="170px" mr="12px" height={'100%'} style={{ height: '44px' }}>
