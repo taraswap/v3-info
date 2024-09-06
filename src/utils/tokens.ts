@@ -21,14 +21,14 @@ export function serializeToken(token: Token): SerializedToken {
 
 export function formatTokenSymbol(address: string, symbol: string) {
   if (WETH_ADDRESSES.includes(address)) {
-    return 'ETH'
+    return 'TARA'
   }
   return symbol
 }
 
 export function formatTokenName(address: string, name: string) {
   if (WETH_ADDRESSES.includes(address)) {
-    return 'Ether'
+    return 'Tara'
   }
   return name
 }

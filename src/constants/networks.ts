@@ -1,4 +1,4 @@
-import TARAXA_LOGO_URL from '../assets/images/taraxa.png'
+import TaraxaLogo from '../assets/images/taraxa-logo.png'
 import { ChainId } from '@taraswap/sdk-core'
 
 export enum SupportedNetwork {
@@ -24,7 +24,7 @@ export const TaraxaNetworkInfo: NetworkInfo = {
   bgColor: '#15AC5B',
   primaryColor: '#15AC5B',
   secondaryColor: '#FF41F4',
-  imageURL: TARAXA_LOGO_URL,
+  imageURL: TaraxaLogo,
 }
 
 export const SUPPORTED_NETWORK_VERSIONS: NetworkInfo[] = [TaraxaNetworkInfo]

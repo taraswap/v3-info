@@ -5,7 +5,7 @@ import Logo from '../Logo'
 import { useCombinedActiveList } from 'state/lists/hooks'
 import useHttpLocations from 'hooks/useHttpLocations'
 import { useActiveNetworkVersion } from 'state/application/hooks'
-import EthereumLogo from '../../assets/images/ethereum-logo.png'
+import TaraxaLogo from '../../assets/images/taraxa-logo.png'
 import { ChainId } from '@taraswap/sdk-core'
 import { TaraxaNetworkInfo } from 'constants/networks'
 
@@ -19,9 +19,11 @@ export function chainIdToNetworkName(networkId: ChainId) {
 }
 
 const getTokenLogoURL = ({ address, chainId }: { address: string; chainId: ChainId }) => {
-  return `https://raw.githubusercontent.com/uniswap/assets/master/blockchains/${chainIdToNetworkName(
-    chainId,
-  )}/assets/${address}/logo.png`
+  return chainId === ChainId.TARAXA
+    ? `https://drive.google.com/file/d/1dnhJ9rdzFT9PRYp0r7wXkg3nIJNpIl0M/view?usp=sharing`
+    : `https://raw.githubusercontent.com/uniswap/assets/master/blockchains/${chainIdToNetworkName(
+        chainId,
+      )}/assets/${address}/logo.png`
 }
 
 const StyledLogo = styled(Logo)<{ size: string }>`
@@ -50,65 +52,19 @@ export default function CurrencyLogo({
   size?: string
   style?: React.CSSProperties
 }) {
-  // useOptimismList()
-  const optimismList = useCombinedActiveList()?.[10]
-  const arbitrumList = useCombinedActiveList()?.[42161]
-  const polygon = useCombinedActiveList()?.[137]
-  const celo = useCombinedActiveList()?.[42220]
-  const bnbList = useCombinedActiveList()?.[ChainId.BNB]
-  const baseList = useCombinedActiveList()?.[ChainId.BASE]
+  const taraxaList = useCombinedActiveList()?.[ChainId.TARAXA]
 
   const [activeNetwork] = useActiveNetworkVersion()
 
   const checkSummed = isAddress(address)
 
-  const optimismURI = useMemo(() => {
-    if (checkSummed && optimismList?.[checkSummed]) {
-      return optimismList?.[checkSummed].token.logoURI
+  const taraxaURI = useMemo(() => {
+    if (checkSummed && taraxaList?.[checkSummed]) {
+      return taraxaList?.[checkSummed].token.logoURI
     }
     return undefined
-  }, [checkSummed, optimismList])
-  const uriLocationsOptimism = useHttpLocations(optimismURI)
-
-  const arbitrumURI = useMemo(() => {
-    if (checkSummed && arbitrumList?.[checkSummed]) {
-      return arbitrumList?.[checkSummed].token.logoURI
-    }
-    return undefined
-  }, [checkSummed, arbitrumList])
-  const uriLocationsArbitrum = useHttpLocations(arbitrumURI)
-
-  const BNBURI = useMemo(() => {
-    if (checkSummed && bnbList?.[checkSummed]) {
-      return bnbList?.[checkSummed].token.logoURI
-    }
-    return undefined
-  }, [checkSummed, bnbList])
-  const uriLocationsBNB = useHttpLocations(BNBURI)
-
-  const BaseURI = useMemo(() => {
-    if (checkSummed && baseList?.[checkSummed]) {
-      return baseList?.[checkSummed].token.logoURI
-    }
-    return undefined
-  }, [checkSummed, baseList])
-  const uriLocationsBase = useHttpLocations(BaseURI)
-
-  const polygonURI = useMemo(() => {
-    if (checkSummed && polygon?.[checkSummed]) {
-      return polygon?.[checkSummed].token.logoURI
-    }
-    return undefined
-  }, [checkSummed, polygon])
-  const uriLocationsPolygon = useHttpLocations(polygonURI)
-
-  const celoURI = useMemo(() => {
-    if (checkSummed && celo?.[checkSummed]) {
-      return celo?.[checkSummed].token.logoURI
-    }
-    return undefined
-  }, [checkSummed, celo])
-  const uriLocationsCelo = useHttpLocations(celoURI)
+  }, [checkSummed, taraxaList])
+  const uriLocationsTaraxa = useHttpLocations(taraxaURI)
 
   //temp until token logo issue merged
   const tempSources: { [address: string]: string } = useMemo(() => {
@@ -125,30 +81,15 @@ export default function CurrencyLogo({
       const override = tempSources[address]
       return [
         getTokenLogoURL({ address: checkSummed, chainId: activeNetwork.chainId }),
-        ...uriLocationsOptimism,
-        ...uriLocationsArbitrum,
-        ...uriLocationsPolygon,
-        ...uriLocationsCelo,
-        ...uriLocationsBNB,
-        ...uriLocationsBase,
+        ...uriLocationsTaraxa,
         override,
       ]
     }
     return []
-  }, [
-    address,
-    tempSources,
-    activeNetwork.chainId,
-    uriLocationsOptimism,
-    uriLocationsArbitrum,
-    uriLocationsPolygon,
-    uriLocationsCelo,
-    uriLocationsBNB,
-    uriLocationsBase,
-  ])
+  }, [address, tempSources, activeNetwork.chainId, uriLocationsTaraxa])
 
-  if (activeNetwork === TaraxaNetworkInfo && address === '0x4200000000000000000000000000000000000006') {
-    return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} {...rest} />
+  if (activeNetwork === TaraxaNetworkInfo && address === '0x5d0fa4c5668e5809c83c95a7cef3a9dd7c68d4fe') {
+    return <StyledEthereumLogo src={TaraxaLogo} size={size} style={style} {...rest} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={'token logo'} style={style} {...rest} />

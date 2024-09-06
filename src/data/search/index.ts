@@ -159,7 +159,7 @@ export function useFetchSearchResults(value: string): {
             id: value,
           },
         })
-
+        console.log(tokens)
         if (tokens.data) {
           setTokenData(tokens.data)
         }

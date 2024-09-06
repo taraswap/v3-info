@@ -1,6 +1,6 @@
 {
-  "name": "@uniswap/interface",
-  "description": "Uniswap Interface",
+  "name": "@taraswap/info-interface",
+  "description": "TaraSwap Info Interface",
   "homepage": ".",
   "private": true,
   "devDependencies": {

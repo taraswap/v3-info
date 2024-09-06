@@ -81,7 +81,7 @@ const MenuItem = styled(ExternalLink)`
   }
 `
 
-const CODE_LINK = 'https://github.com/Uniswap/uniswap-v3-info'
+const CODE_LINK = 'https://github.com/taraswap/v3-info'
 
 export default function Menu() {
   const node = useRef<HTMLDivElement>(null)
@@ -97,11 +97,11 @@ export default function Menu() {
 
       {isOpen && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://uniswap.org/">
+          <MenuItem id="link" href={`${process.env.REACT_APP_BASE_URL}`}>
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://docs.uniswap.org/">
+          <MenuItem id="link" href={`${process.env.REACT_APP_BASE_DOCS_URL}`}>
             <BookOpen size={14} />
             Docs
           </MenuItem>
@@ -109,7 +109,7 @@ export default function Menu() {
             <Code size={14} />
             Github
           </MenuItem>
-          <MenuItem id="link" href="https://discord.gg/FCfyBSbCU5">
+          <MenuItem id="link" href={`${process.env.REACT_APP_DISCORD_URL}`}>
             <MessageCircle size={14} />
             Discord
           </MenuItem>

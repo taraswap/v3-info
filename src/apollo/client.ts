@@ -6,7 +6,7 @@ export const healthClient = new ApolloClient({
 })
 
 export const taraxaBlockClient = new ApolloClient({
-  uri: 'https://indexer.lswap.app/subgraphs/name/lara-staking/uniswap-v3/graphql',
+  uri: 'https://indexer.lswap.app/subgraphs/name/blocklytics/ethereum-blocks',
   cache: new InMemoryCache(),
   queryDeduplication: true,
   defaultOptions: {
@@ -21,7 +21,7 @@ export const taraxaBlockClient = new ApolloClient({
 })
 
 export const taraxaClient = new ApolloClient({
-  uri: 'https://indexer.lswap.app/subgraphs/name/lara-staking/uniswap-v3/graphql',
+  uri: 'https://indexer.lswap.app/subgraphs/name/lara-staking/uniswap-v3',
   cache: new InMemoryCache({
     typePolicies: {
       Token: {
