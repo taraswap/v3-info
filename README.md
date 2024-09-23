@@ -1,8 +1,8 @@
-## Uniswap Info V3
+## Taraswap Info V3
 
-An open sourced interface for Uniswap V3 analytics.
+An open sourced interface for Taraswap V3 analytics.
 
-Info URL: https://info.uniswap.org/#/
+Info URL: https://info.taraswap.org/#/
 
 ## Development
 

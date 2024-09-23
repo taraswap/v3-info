@@ -94,6 +94,8 @@ function PoolPage({ address }: { address: string }) {
   const backgroundColor = useColor()
   const theme = useTheme()
 
+  address = address.toLowerCase() ?? ''
+
   // token data
   const poolData = usePoolDatas([address])[0]
   const chartData = usePoolChartData(address)
