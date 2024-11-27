@@ -18,12 +18,8 @@ export function chainIdToNetworkName(networkId: ChainId) {
   }
 }
 
-const getTokenLogoURL = ({ address, chainId }: { address: string; chainId: ChainId }) => {
-  return chainId === ChainId.TARAXA
-    ? `https://drive.google.com/file/d/1dnhJ9rdzFT9PRYp0r7wXkg3nIJNpIl0M/view?usp=sharing`
-    : `https://raw.githubusercontent.com/uniswap/assets/master/blockchains/${chainIdToNetworkName(
-        chainId,
-      )}/assets/${address}/logo.png`
+const getTokenLogoURL = ({ address }: { address: string }) => {
+  return `https://raw.githubusercontent.com/taraswap/assets/master/${address}/logo.png`
 }
 
 const StyledLogo = styled(Logo)<{ size: string }>`
@@ -79,14 +75,12 @@ export default function CurrencyLogo({
 
     if (checkSummed && address) {
       const override = tempSources[address]
-      return [
-        getTokenLogoURL({ address: checkSummed, chainId: activeNetwork.chainId }),
-        ...uriLocationsTaraxa,
-        override,
-      ]
+      return [getTokenLogoURL({ address: checkSummed }), ...uriLocationsTaraxa, override]
     }
     return []
-  }, [address, tempSources, activeNetwork.chainId, uriLocationsTaraxa])
+  }, [address, tempSources, uriLocationsTaraxa])
+
+  console.log(srcs)
 
   if (activeNetwork === TaraxaNetworkInfo && address === '0x5d0fa4c5668e5809c83c95a7cef3a9dd7c68d4fe') {
     return <StyledEthereumLogo src={TaraxaLogo} size={size} style={style} {...rest} />
