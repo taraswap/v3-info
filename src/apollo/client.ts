@@ -21,7 +21,7 @@ export const taraxaBlockClient = new ApolloClient({
 })
 
 export const taraxaClient = new ApolloClient({
-  uri: 'https://indexer.lswap.app/subgraphs/name/lara-staking/uniswap-v3',
+  uri: process.env.REACT_APP_GRAPHQL_URL,
   cache: new InMemoryCache({
     typePolicies: {
       Token: {
