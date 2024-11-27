@@ -159,7 +159,12 @@ export default function Header() {
       <HeaderRow>
         <Title to={networkPrefix(activeNewtork)}>
           <UniIcon>
-            <img width={'124px'} src={LogoDark} alt="logo" />
+            <img
+              width={'124px'}
+              src={LogoDark}
+              alt="logo"
+              onClick={() => window.open('https://app.taraswap.org', '_blank')}
+            />
           </UniIcon>
         </Title>
         <HeaderLinks>
