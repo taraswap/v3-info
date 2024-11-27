@@ -91,7 +91,7 @@ const DataRow = ({ tokenData, index }: { tokenData: TokenData; index: number }) 
           </HideExtraSmall>
         </Label>
         <Label end={1} fontWeight={400}>
-          {formatDollarAmount(tokenData.priceUSD)}
+          {formatDollarAmount(tokenData.priceUSD, 6)}
         </Label>
         <Label end={1} fontWeight={400}>
           <Percent value={tokenData.priceUSDChange} fontWeight={400} />
