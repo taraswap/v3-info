@@ -163,7 +163,7 @@ export default function Header() {
               width={'124px'}
               src={LogoDark}
               alt="logo"
-              onClick={() => window.open('https://app.taraswap.org', '_blank')}
+              onClick={() => window.open(process.env.REACT_APP_SWAP_BASE_URL, '_blank')}
             />
           </UniIcon>
         </Title>
