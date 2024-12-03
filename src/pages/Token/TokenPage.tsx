@@ -283,12 +283,12 @@ export default function TokenPage() {
                         <TYPE.label fontSize="24px" height="30px">
                           <MonoSpace>
                             {latestValue
-                              ? formatDollarAmount(latestValue, 4)
+                              ? formatDollarAmount(latestValue, 6)
                               : view === ChartView.VOL
-                              ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+                              ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 6)
                               : view === ChartView.TVL
-                              ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                              : formatDollarAmount(tokenData.priceUSD, 4)}
+                              ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value, 6)
+                              : formatDollarAmount(tokenData.priceUSD, 6)}
                           </MonoSpace>
                         </TYPE.label>
                       </RowFixed>
