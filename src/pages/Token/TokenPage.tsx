@@ -228,7 +228,7 @@ export default function TokenPage() {
                       )}
                     </RowFixed>
                     <RowFlat style={{ marginTop: '8px' }}>
-                      <PriceText mr="10px"> {formatDollarAmount(tokenData.priceUSD)}</PriceText>
+                      <PriceText mr="10px"> {formatDollarAmount(tokenData.priceUSD, 6)}</PriceText>
                       (<Percent value={tokenData.priceUSDChange} />)
                     </RowFlat>
                   </AutoColumn>
@@ -283,12 +283,12 @@ export default function TokenPage() {
                         <TYPE.label fontSize="24px" height="30px">
                           <MonoSpace>
                             {latestValue
-                              ? formatDollarAmount(latestValue, 2)
+                              ? formatDollarAmount(latestValue, 4)
                               : view === ChartView.VOL
                               ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
                               : view === ChartView.TVL
                               ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                              : formatDollarAmount(tokenData.priceUSD, 2)}
+                              : formatDollarAmount(tokenData.priceUSD, 4)}
                           </MonoSpace>
                         </TYPE.label>
                       </RowFixed>
