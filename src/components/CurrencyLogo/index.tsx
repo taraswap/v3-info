@@ -19,7 +19,7 @@ export function chainIdToNetworkName(networkId: ChainId) {
 }
 
 const getTokenLogoURL = ({ address }: { address: string }) => {
-  return `https://raw.githubusercontent.com/taraswap/assets/master/${address}/logo.png`
+  return `https://raw.githubusercontent.com/taraswap/assets/master/logos/${address}/logo.png`
 }
 
 const StyledLogo = styled(Logo)<{ size: string }>`
