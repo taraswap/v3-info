@@ -80,8 +80,6 @@ export default function CurrencyLogo({
     return []
   }, [address, tempSources, uriLocationsTaraxa])
 
-  console.log(srcs)
-
   if (activeNetwork === TaraxaNetworkInfo && address === '0x5d0fa4c5668e5809c83c95a7cef3a9dd7c68d4fe') {
     return <StyledEthereumLogo src={TaraxaLogo} size={size} style={style} {...rest} />
   }

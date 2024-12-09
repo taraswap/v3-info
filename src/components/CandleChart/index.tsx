@@ -138,6 +138,11 @@ const CandleChart = ({
         borderUpColor: 'green',
         wickDownColor: 'red',
         wickUpColor: 'green',
+        priceFormat: {
+          type: 'price',
+          precision: 4,
+          minMove: 0.0001,
+        },
       })
 
       series.setData(data)
