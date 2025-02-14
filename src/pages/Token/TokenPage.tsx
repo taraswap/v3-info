@@ -113,8 +113,6 @@ export default function TokenPage() {
     ? GECKOTERMINAL_TOKEN_POOLS[tokenData.symbol as keyof typeof GECKOTERMINAL_TOKEN_POOLS] || null
     : null
 
-  console.log('tokenPool ----- ', tokenPool)
-
   // check for link to CMC
   const cmcLink = useCMCLink(formattedAddress)
 
