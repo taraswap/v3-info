@@ -43,21 +43,24 @@ import CMCLogo from '../../assets/images/cmc.png'
 import { useParams } from 'react-router-dom'
 import { Trace } from '@uniswap/analytics'
 import { ChainId } from '@taraswap/sdk-core'
+import GeckoTerminalEmbed from 'components/GeckoTerminalEmbed'
+import { GECKOTERMINAL_TOKEN_POOLS } from 'constants/pools'
 
 const PriceText = styled(TYPE.label)`
   font-size: 36px;
   line-height: 0.8;
 `
 
-const ContentLayout = styled.div`
+const ContentLayout = styled.div<{ isGridLayout?: boolean }>`
   margin-top: 16px;
   display: grid;
-  grid-template-columns: 260px 1fr;
-  grid-gap: 1em;
+  gap: 1em;
+
+  ${({ isGridLayout }) => isGridLayout && `grid-template-columns: 260px 1fr;`}
 
   @media screen and (max-width: 800px) {
+    ${({ isGridLayout }) => isGridLayout && `grid-template-rows: auto auto;`}
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
   }
 `
 
@@ -104,6 +107,13 @@ export default function TokenPage() {
   const poolDatas = usePoolDatas(poolsForToken ?? [])
   const transactions = useTokenTransactions(formattedAddress)
   const chartData = useTokenChartData(formattedAddress)
+
+  // Get token pool info based on the token symbol
+  const tokenPool = tokenData
+    ? GECKOTERMINAL_TOKEN_POOLS[tokenData.symbol as keyof typeof GECKOTERMINAL_TOKEN_POOLS] || null
+    : null
+
+  console.log('tokenPool ----- ', tokenPool)
 
   // check for link to CMC
   const cmcLink = useCMCLink(formattedAddress)
@@ -253,111 +263,116 @@ export default function TokenPage() {
                   )}
                 </ResponsiveRow>
               </AutoColumn>
-              <ContentLayout>
+              <ContentLayout isGridLayout={!tokenPool}>
                 <DarkGreyCard>
-                  <AutoColumn $gap="lg">
+                  <AutoColumn $gap="lg" useGridTemplate={!!tokenPool}>
                     <AutoColumn $gap="4px">
                       <TYPE.main fontWeight={400}>TVL</TYPE.main>
-                      <TYPE.label fontSize="24px">{formatDollarAmount(tokenData.tvlUSD)}</TYPE.label>
+                      <TYPE.label fontSize="22px">{formatDollarAmount(tokenData.tvlUSD)}</TYPE.label>
                       <Percent value={tokenData.tvlUSDChange} />
                     </AutoColumn>
                     <AutoColumn $gap="4px">
                       <TYPE.main fontWeight={400}>24h Trading Vol</TYPE.main>
-                      <TYPE.label fontSize="24px">{formatDollarAmount(tokenData.volumeUSD)}</TYPE.label>
+                      <TYPE.label fontSize="22px">{formatDollarAmount(tokenData.volumeUSD)}</TYPE.label>
                       <Percent value={tokenData.volumeUSDChange} />
                     </AutoColumn>
                     <AutoColumn $gap="4px">
                       <TYPE.main fontWeight={400}>7d Trading Vol</TYPE.main>
-                      <TYPE.label fontSize="24px">{formatDollarAmount(tokenData.volumeUSDWeek)}</TYPE.label>
+                      <TYPE.label fontSize="22px">{formatDollarAmount(tokenData.volumeUSDWeek)}</TYPE.label>
                     </AutoColumn>
                     <AutoColumn $gap="4px">
                       <TYPE.main fontWeight={400}>24h Fees</TYPE.main>
-                      <TYPE.label fontSize="24px">{formatDollarAmount(tokenData.feesUSD)}</TYPE.label>
+                      <TYPE.label fontSize="22px">{formatDollarAmount(tokenData.feesUSD)}</TYPE.label>
                     </AutoColumn>
                   </AutoColumn>
                 </DarkGreyCard>
-                <DarkGreyCard>
-                  <RowBetween align="flex-start">
-                    <AutoColumn>
-                      <RowFixed>
-                        <TYPE.label fontSize="24px" height="30px">
-                          <MonoSpace>
-                            {latestValue
-                              ? formatDollarAmount(latestValue, 6)
-                              : view === ChartView.VOL
-                              ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 6)
-                              : view === ChartView.TVL
-                              ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value, 6)
-                              : formatDollarAmount(tokenData.priceUSD, 6)}
-                          </MonoSpace>
-                        </TYPE.label>
-                      </RowFixed>
-                      <TYPE.main height="20px" fontSize="12px">
-                        {valueLabel ? (
-                          <MonoSpace>{valueLabel} (UTC)</MonoSpace>
-                        ) : (
-                          <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
-                        )}
-                      </TYPE.main>
-                    </AutoColumn>
-                    <ToggleWrapper width="180px">
-                      <ToggleElementFree
-                        isActive={view === ChartView.VOL}
-                        fontSize="12px"
-                        onClick={() => (view === ChartView.VOL ? setView(ChartView.TVL) : setView(ChartView.VOL))}
-                      >
-                        Volume
-                      </ToggleElementFree>
-                      <ToggleElementFree
-                        isActive={view === ChartView.TVL}
-                        fontSize="12px"
-                        onClick={() => (view === ChartView.TVL ? setView(ChartView.PRICE) : setView(ChartView.TVL))}
-                      >
-                        TVL
-                      </ToggleElementFree>
-                      <ToggleElementFree
-                        isActive={view === ChartView.PRICE}
-                        fontSize="12px"
-                        onClick={() => setView(ChartView.PRICE)}
-                      >
-                        Price
-                      </ToggleElementFree>
-                    </ToggleWrapper>
-                  </RowBetween>
-                  {view === ChartView.TVL ? (
-                    <LineChart
-                      data={formattedTvlData}
-                      color={backgroundColor}
-                      minHeight={340}
-                      value={latestValue}
-                      label={valueLabel}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                    />
-                  ) : view === ChartView.VOL ? (
-                    <BarChart
-                      data={formattedVolumeData}
-                      color={backgroundColor}
-                      minHeight={340}
-                      value={latestValue}
-                      label={valueLabel}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                    />
-                  ) : view === ChartView.PRICE ? (
-                    adjustedToCurrent ? (
-                      <CandleChart
-                        data={adjustedToCurrent}
+                {tokenPool ? (
+                  <GeckoTerminalEmbed network={tokenPool.network} poolAddress={tokenPool.poolAddress} />
+                ) : (
+                  <DarkGreyCard>
+                    <RowBetween align="flex-start">
+                      <AutoColumn>
+                        <RowFixed>
+                          <TYPE.label fontSize="24px" height="30px">
+                            <MonoSpace>
+                              {latestValue
+                                ? formatDollarAmount(latestValue, 6)
+                                : view === ChartView.VOL
+                                ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 6)
+                                : view === ChartView.TVL
+                                ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value, 6)
+                                : formatDollarAmount(tokenData.priceUSD, 6)}
+                            </MonoSpace>
+                          </TYPE.label>
+                        </RowFixed>
+                        <TYPE.main height="20px" fontSize="12px">
+                          {valueLabel ? (
+                            <MonoSpace>{valueLabel} (UTC)</MonoSpace>
+                          ) : (
+                            <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
+                          )}
+                        </TYPE.main>
+                      </AutoColumn>
+                      <ToggleWrapper width="180px">
+                        <ToggleElementFree
+                          isActive={view === ChartView.VOL}
+                          fontSize="12px"
+                          onClick={() => (view === ChartView.VOL ? setView(ChartView.TVL) : setView(ChartView.VOL))}
+                        >
+                          Volume
+                        </ToggleElementFree>
+                        <ToggleElementFree
+                          isActive={view === ChartView.TVL}
+                          fontSize="12px"
+                          onClick={() => (view === ChartView.TVL ? setView(ChartView.PRICE) : setView(ChartView.TVL))}
+                        >
+                          TVL
+                        </ToggleElementFree>
+                        <ToggleElementFree
+                          isActive={view === ChartView.PRICE}
+                          fontSize="12px"
+                          onClick={() => setView(ChartView.PRICE)}
+                        >
+                          Price
+                        </ToggleElementFree>
+                      </ToggleWrapper>
+                    </RowBetween>
+                    {view === ChartView.TVL ? (
+                      <LineChart
+                        data={formattedTvlData}
+                        color={backgroundColor}
+                        minHeight={340}
+                        value={latestValue}
+                        label={valueLabel}
                         setValue={setLatestValue}
                         setLabel={setValueLabel}
-                        color={backgroundColor}
                       />
-                    ) : (
-                      <LocalLoader fill={false} />
-                    )
-                  ) : null}
-                </DarkGreyCard>
+                    ) : view === ChartView.VOL ? (
+                      <BarChart
+                        data={formattedVolumeData}
+                        color={backgroundColor}
+                        minHeight={340}
+                        value={latestValue}
+                        label={valueLabel}
+                        setValue={setLatestValue}
+                        setLabel={setValueLabel}
+                      />
+                    ) : view === ChartView.PRICE ? (
+                      adjustedToCurrent ? (
+                        <CandleChart
+                          data={adjustedToCurrent}
+                          setValue={setLatestValue}
+                          setLabel={setValueLabel}
+                          color={backgroundColor}
+                        />
+                      ) : (
+                        <LocalLoader fill={false} />
+                      )
+                    ) : null}
+                  </DarkGreyCard>
+                )}
               </ContentLayout>
+
               <TYPE.main>Pools</TYPE.main>
               <DarkGreyCard>
                 <PoolTable poolDatas={poolDatas} />
