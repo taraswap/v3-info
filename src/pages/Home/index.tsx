@@ -7,7 +7,7 @@ import LineChart from 'components/LineChart/alt'
 import useTheme from 'hooks/useTheme'
 import { useProtocolChartData, useProtocolData, useProtocolTransactions } from 'state/protocol/hooks'
 import { DarkGreyCard } from 'components/Card'
-import { formatDollarAmount } from 'utils/numbers'
+import { formatAmount, formatDollarAmount } from 'utils/numbers'
 import Percent from 'components/Percent'
 import { HideMedium, HideSmall, StyledInternalLink } from '../../theme/components'
 import TokenTable from 'components/tokens/TokenTable'
@@ -25,6 +25,7 @@ import { useTransformedVolumeData } from 'hooks/chart'
 import { SmallOptionButton } from 'components/Button'
 import { VolumeWindow } from 'types'
 import { Trace } from '@uniswap/analytics'
+import { getCirculatingSupply } from 'utils/circulatingSupply'
 
 const ChartWrapper = styled.div`
   width: 49%;
@@ -50,6 +51,7 @@ export default function Home() {
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
+  const [circulatingSupply, setCirculatingSupply] = useState<number>(0)
 
   // Hot fix to remove errors in TVL data while subgraph syncs.
   const [chartData] = useProtocolChartData()
@@ -78,6 +80,15 @@ export default function Home() {
       setLiquidityHover(protocolData.tvlUSD)
     }
   }, [liquidityHover, protocolData])
+
+  const fetchBalance = async () => {
+    const balance = await getCirculatingSupply()
+    setCirculatingSupply(balance)
+  }
+
+  useEffect(() => {
+    fetchBalance()
+  }, [])
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
@@ -236,6 +247,22 @@ export default function Home() {
               </RowBetween>
             </DarkGreyCard>
           </HideSmall>
+          <DarkGreyCard>
+            <RowBetween>
+              <RowFixed>
+                <RowFixed mr="20px">
+                  <TYPE.main mr="4px">TSWAP circulating supply: </TYPE.main>
+                  <TYPE.label mr="4px">{formatAmount(circulatingSupply)}</TYPE.label>
+                  {/* <Percent value={protocolData?.volumeUSDChange} wrap={true} /> */}
+                </RowFixed>
+                <RowFixed mr="20px">
+                  <TYPE.main mr="4px">TSWAP market cap: </TYPE.main>
+                  <TYPE.label mr="4px">{formatDollarAmount((protocolData?.tswapPrice ?? 0) * 1000000000)}</TYPE.label>
+                  {/* <Percent value={protocolData?.feeChange} wrap={true} /> */}
+                </RowFixed>
+              </RowFixed>
+            </RowBetween>
+          </DarkGreyCard>
           <RowBetween>
             <TYPE.main>Top Tokens</TYPE.main>
             <StyledInternalLink to="tokens">Explore</StyledInternalLink>

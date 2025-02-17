@@ -22,6 +22,22 @@ export const GLOBAL_DATA = (block?: string) => {
   return gql(queryString)
 }
 
+export const TSWAP_PRICE = () => {
+  const queryString = `
+    query tokens {
+      token(id: "0x712037beab9a29216650b8d032b4d9a59af8ad6c") {
+        id
+        symbol
+        derivedETH
+      }
+      bundle(id: 1){
+        ethPriceUSD
+      }
+    }
+  `
+  return gql(queryString)
+}
+
 interface GlobalResponse {
   factories: {
     txCount: string
@@ -29,6 +45,17 @@ interface GlobalResponse {
     totalFeesUSD: string
     totalValueLockedUSD: string
   }[]
+}
+
+interface TokenMetrics {
+  bundle: {
+    ethPriceUSD: string
+  }
+  token: {
+    derivedETH: string
+    id: string
+    symbol: string
+  }
 }
 
 export function useFetchProtocolData(
@@ -62,13 +89,24 @@ export function useFetchProtocolData(
   } = useQuery<GlobalResponse>(GLOBAL_DATA(block24?.number ?? 0), { client: activeDataClient })
 
   const {
+    loading: loadingTswapPrice,
+    error: errorTswapPrice,
+    data: dataTswapPrice,
+  } = useQuery<TokenMetrics>(TSWAP_PRICE(), {
+    client: activeDataClient,
+  })
+
+  const parsedTswapPrice =
+    parseFloat(dataTswapPrice?.bundle?.ethPriceUSD ?? '0') * parseFloat(dataTswapPrice?.token?.derivedETH ?? '0')
+
+  const {
     loading: loading48,
     error: error48,
     data: data48,
   } = useQuery<GlobalResponse>(GLOBAL_DATA(block48?.number ?? 0), { client: activeDataClient })
 
-  const anyError = Boolean(error || error24 || error48 || blockError)
-  const anyLoading = Boolean(loading || loading24 || loading48)
+  const anyError = Boolean(error || error24 || error48 || blockError || errorTswapPrice)
+  const anyLoading = Boolean(loading || loading24 || loading48 || loadingTswapPrice)
 
   const parsed = data?.factories?.[0]
   const parsed24 = data24?.factories?.[0]
@@ -78,6 +116,9 @@ export function useFetchProtocolData(
     if (anyError || anyLoading || !parsed || !blocks || tvlOffset === undefined) {
       return undefined
     }
+
+    // token data
+    const tswapPrice = parsedTswapPrice
 
     // volume data
     const volumeUSD =
@@ -126,8 +167,9 @@ export function useFetchProtocolData(
       feeChange,
       txCount,
       txCountChange,
+      tswapPrice,
     }
-  }, [anyError, anyLoading, blocks, parsed, parsed24, parsed48, tvlOffset])
+  }, [anyError, anyLoading, blocks, parsed, parsed24, parsed48, parsedTswapPrice, tvlOffset])
   return {
     loading: anyLoading,
     error: anyError,
