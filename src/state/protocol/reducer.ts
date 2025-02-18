@@ -20,6 +20,9 @@ export interface ProtocolData {
   // transactions
   txCount: number
   txCountChange: number
+
+  // token
+  tswapPrice: number
 }
 
 export interface ProtocolState {
