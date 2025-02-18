@@ -257,7 +257,9 @@ export default function Home() {
                 </RowFixed>
                 <RowFixed mr="20px">
                   <TYPE.main mr="4px">TSWAP market cap: </TYPE.main>
-                  <TYPE.label mr="4px">{formatDollarAmount((protocolData?.tswapPrice ?? 0) * 1000000000)}</TYPE.label>
+                  <TYPE.label mr="4px">
+                    {formatDollarAmount((protocolData?.tswapPrice ?? 0) * (1000000000 - circulatingSupply))}
+                  </TYPE.label>
                   {/* <Percent value={protocolData?.feeChange} wrap={true} /> */}
                 </RowFixed>
               </RowFixed>
