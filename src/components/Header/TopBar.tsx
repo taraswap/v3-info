@@ -31,7 +31,7 @@ const TopBar = () => {
           <RowFixed>
             <Item>TARA Price:</Item>
             <Item fontWeight="700" ml="4px">
-              {formatDollarAmount(ethPrices?.current)}
+              {formatDollarAmount(ethPrices?.current, 5)}
             </Item>
           </RowFixed>
         </AutoRow>

@@ -5,34 +5,19 @@ import gql from 'graphql-tag'
 import { TaraxaNetworkInfo } from 'constants/networks'
 
 export const SUBGRAPH_HEALTH = gql`
-  query health($name: Bytes) {
-    indexingStatusForCurrentVersion(subgraphName: $name, subgraphError: allow) {
-      synced
-      health
-      chains {
-        chainHeadBlock {
-          number
-        }
-        latestBlock {
-          number
-        }
-      }
+  query block {
+    blocks(first: 1, orderBy: number, orderDirection: desc) {
+      id
+      number
     }
   }
 `
 
 interface HealthResponse {
-  indexingStatusForCurrentVersion: {
-    chains: {
-      chainHeadBlock: {
-        number: string
-      }
-      latestBlock: {
-        number: string
-      }
-    }[]
-    synced: boolean
-  }
+  blocks: {
+    id: string
+    number: string
+  }[]
 }
 
 /**
@@ -53,7 +38,7 @@ export function useFetchedSubgraphStatus(): {
     },
   })
 
-  const parsed = data?.indexingStatusForCurrentVersion
+  const parsed = data?.blocks[0]
 
   if (loading) {
     return {
@@ -71,12 +56,11 @@ export function useFetchedSubgraphStatus(): {
     }
   }
 
-  const syncedBlock = parsed?.chains[0].latestBlock.number
-  const headBlock = parsed?.chains[0].chainHeadBlock.number
+  const syncedBlock = parsed?.number
 
   return {
     available: true,
     syncedBlock: syncedBlock ? parseFloat(syncedBlock) : undefined,
-    headBlock: headBlock ? parseFloat(headBlock) : undefined,
+    headBlock: syncedBlock ? parseFloat(syncedBlock) : undefined,
   }
 }

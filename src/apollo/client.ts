@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 export const healthClient = new ApolloClient({
-  uri: 'https://api.thegraph.com/index-node/graphql',
+  uri: 'https://indexer.lswap.app/subgraphs/name/blocklytics/ethereum-blocks',
   cache: new InMemoryCache(),
 })
 
